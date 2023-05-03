@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e04ff35e71424a3aa6c97d4ad6a8637d" Name="Diagram1">
+        <EntityTypeShape EntityType="DistributorDBModel.C_Order" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.C_User" Width="1.5" PointX="1.5" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.Cart" Width="1.5" PointX="0.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.CartDetail" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.Customer" Width="1.5" PointX="1.5" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.CustomerAccount" Width="1.5" PointX="3.75" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.OrderDetail" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.Product" Width="1.5" PointX="0.75" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistributorDBModel.UserAccount" Width="1.5" PointX="1.5" PointY="22.75" IsExpanded="true" />
+        <AssociationConnector Association="DistributorDBModel.FK__OrderDeta__Order__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__Customer__Custom__2A4B4B5E" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__CustomerA__Custo__36B12243" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__Cart__CustomerID__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__CartDetai__CartI__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__CartDetai__Produ__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__CustomerA__Custo__35BCFE0A" ManuallyRouted="false" />
+        <AssociationConnector Association="DistributorDBModel.FK__OrderDeta__Produ__4BAC3F29" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
