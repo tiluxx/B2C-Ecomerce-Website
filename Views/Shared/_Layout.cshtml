@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    int curCartQuan = 0;
+    if (Session["CartQuan"] != null)
+    {
+        curCartQuan = (int)Session["CartQuan"];
+    }
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -16,13 +23,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Resellers' system", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Products", "Index", "Product")</li>s
+                    <li><a href="@Url.Action("Cart", "Product")">Carts <span class="badge">@curCartQuan</span></a></li>
+                    <li>@Html.ActionLink("View orders", "Index", "Order")</li>
+                    <li>@Html.ActionLink("Login", "Index", "Login")</li>
                 </ul>
             </div>
         </div>

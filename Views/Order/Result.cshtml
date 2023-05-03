@@ -1,8 +1,23 @@
 ﻿
+
 @{
     ViewBag.Title = "Result";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (Session["AgentID"] != null)
+    {
+        Layout = "~/Views/Shared/_Logined.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    string message = ViewBag.Message;
 }
 
-<h2>Result</h2>
-
+<div>
+    <h2 class="text-center">Result</h2>
+    <div class="alert alert-success text-center">@message</div>
+    <div style="margin-top: 10px; margin-bottom: 10px" class="text-center">
+        <a id="create-receipt-btn" class="btn btn-primary text-center" href="@Url.Action("Index", "Product")">Go back</a>
+    </div>
+</div>
