@@ -1,14 +1,7 @@
 ﻿@using B2C_Ecomerce_Website.Models;
 @{
     ViewBag.Title = "OrderPreview";
-    if (Session["CustomerID"] != null)
-    {
-        Layout = "~/Views/Shared/_Logined.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<Product> productList = (List<Product>)ViewBag.ProductList;
     int totalBill = 0;
@@ -22,27 +15,7 @@
         productList = new List<Product>();
     }
 
-    string customerEmail = "";
-    string customerName = "";
-    string customerPhone = "";
-    string customerAddress = "";
-    if (ViewBag.CustomerInfo != null)
-    {
-        List<string> customerInfo = (List<string>)ViewBag.CustomerInfo;
-        customerEmail = customerInfo[0];
-        customerName = customerInfo[1];
-        customerPhone = customerInfo[2];
-        customerAddress = customerInfo[3];
-    }
-
     int counter = 0;
-
-    string customerId = "";
-    if (Session["CustomerID"] != null)
-    {
-        customerId = Session["CustomerID"].ToString();
-    }
-    string cartID = "";
 }
 
     <div>
@@ -68,9 +41,11 @@
                         {
                             string productIdInfo = "ProductID[" + counter + "]";
                             string productQuantityInfo = "ProductQuantity[" + counter + "]";
+                            string productAvailableQuantityInfo = "ProductAvailableQuantity[" + counter + "]";
                             counter++;
                             <input type="hidden" name="@productIdInfo" value="@product.ProductID" />
-                            <input type="hidden" name="@productQuantityInfo" value="@product.ProductQuantity" />
+                            <input type="hidden" name="@productQuantityInfo" value="@product.ProductOrderQuantity" />
+                            <input type="hidden" name="@productAvailableQuantityInfo" value="@product.ProductQuantity" />
                             <tr>
                                 <td>@product.ProductID</td>
                                 <td>@product.ProductName</td>
@@ -90,22 +65,21 @@
                     </tfoot>
                 </table>
                 <input type="hidden" name="TotalBill" value="@totalBill" />
-                <input class="text-box single-line" name="CartID" type="hidden" value="@cartID" required="required" />
                 <div class="editor-field text-center" style="margin-bottom: 10px">
                     <label for="customerid">Full name</label>
-                    <input class="text-box single-line" id="CustomerName" name="CustomerName" type="text" value="@customerName" required="required" />
+                    <input class="text-box single-line" id="CustomerName" name="CustomerName" type="text" value="" required="required" />
                 </div>
                 <div class="editor-field text-center" style="margin-bottom: 10px">
                     <label for="customerid">Phone number</label>
-                    <input class="text-box single-line" id="CustomerPhone" name="CustomerPhone" type="text" value="@customerPhone" required="required" />
+                    <input class="text-box single-line" id="CustomerPhone" name="CustomerPhone" type="text" value="" required="required" />
                 </div>
                 <div class="editor-field text-center" style="margin-bottom: 10px">
                     <label for="EmailInput">Email</label>
-                    <input class="text-box single-line" id="EmailInput" name="EmailInput" type="email" value="@customerEmail" required="required" />
+                    <input class="text-box single-line" id="EmailInput" name="EmailInput" type="email" value="" required="required" />
                 </div>
                 <div class="editor-field text-center" style="margin-bottom: 10px">
                     <label for="CustomerAddress">Address</label>
-                    <input class="text-box single-line" id="CustomerAddress" name="CustomerAddress" type="text" value="@customerAddress" required="required" />
+                    <input class="text-box single-line" id="CustomerAddress" name="CustomerAddress" type="text" value="" required="required" />
                 </div>
                 <div class="editor-field text-center" style="margin-bottom: 10px">
                     <label for="PaymentMethodSelection">Payment method</label>

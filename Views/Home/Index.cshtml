@@ -1,13 +1,6 @@
 ﻿@using B2C_Ecomerce_Website.Models;
 @{
-    if (Session["CustomerID"] != null)
-    {
-        Layout = "~/Views/Shared/_Logined.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Home Page";
 
     List<Product> productList = ViewBag.ProductList;

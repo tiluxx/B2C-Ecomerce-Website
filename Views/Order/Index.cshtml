@@ -1,14 +1,7 @@
 ﻿@using B2C_Ecomerce_Website.Models;
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
-    if (Session["CustomerID"] != null)
-    {
-        Layout = "~/Views/Shared/_Logined.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
 }
 
 <div>
@@ -19,10 +12,13 @@
             {
                 <div class="panel-heading text-center">Enter your order ID to view</div>
                 <div class="panel-body">
-                    <p>Welcom Agents! Please enter your order ID to view order status</p>
+                    <p>Welcom Customer! Please enter your order ID to view order status</p>
                 </div>
                 <div class="editor-field text-center" style="width: 100%">
                     <input class="text-box single-line text-center" name="OrderID" type="text" value="" />
+                </div>
+                <div class="text-center">
+                    <input type="submit" value="View order" class="btn btn-primary text-center" />
                 </div>
             }
         </div>

@@ -1,14 +1,7 @@
 ﻿@using B2C_Ecomerce_Website.Models
 @{
     ViewBag.Title = "Cart";
-    if (Session["CustomerID"] != null)
-    {
-        Layout = "~/Views/Shared/_Logined.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
     List<Product> productList = new List<Product>();
     if (ViewBag.ProductList != null)
@@ -39,6 +32,7 @@
                             <th>Product ID</th>
                             <th>Product Name</th>
                             <th>Price</th>
+                            <th>Available Quantity</th>
                             <th>Order Quantity</th>
                             <th>Brand</th>
                             <th>Origin</th>
@@ -53,6 +47,7 @@
                                 string productNameInfo = "ProductName[" + counter + "]";
                                 string productPriceInfo = "ProductPrice[" + counter + "]";
                                 string productQuantityInfo = "ProductQuantity[" + counter + "]";
+                                string productAvailableQuantityInfo = "ProductAvailableQuantity[" + counter + "]";
                                 string productSizeInfo = "ProductSize[" + counter + "]";
                                 string productUnitSizeInfo = "ProductUnitSize[" + counter + "]";
                                 string productBrandInfo = "ProductBrand[" + counter + "]";
@@ -69,9 +64,11 @@
                                     <td>@product.ProductID</td>
                                     <td>@product.ProductName</td>
                                     <td>@product.ProductPrice</td>
+                                    <td>@product.ProductQuantity</td>
                                     <td>
                                         <div class="editor-field">
-                                            <input class="text-box single-line" name="@productQuantityInfo" type="number" min="1" value="1" />
+                                            <input class="text-box single-line" name="@productQuantityInfo" type="number" min="1" value="1" max="@product.ProductQuantity" />
+                                            <input class="text-box single-line" name="@productAvailableQuantityInfo" type="hidden" value="@product.ProductQuantity" />
                                         </div>
                                     </td>
                                     <td>@product.ProductBrand</td>
@@ -88,7 +85,7 @@
                             }
                         }
                     </table>
-                    <div>
+                    <div class="text-center">
                         <input type="submit" value="Go order" class="btn btn-primary" />
                     </div>
                 }

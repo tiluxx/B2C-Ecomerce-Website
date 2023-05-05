@@ -48,22 +48,6 @@ namespace B2C_Ecomerce_Website.Controllers
             int formCount = Request.Form.Count / 8;
             decimal totalBill = 0;
 
-            //List<string> customerInfo = new List<string>();
-            //if (Session["CustomerID"] == null || Session["CustomerID"].ToString().Equals(""))
-            //{
-            //    string customerID = Session["CustomerID"].ToString();
-            //    C_User customer = new C_User();
-            //    string customerEmail = customer.GetCustomerInfo("UserEmail", customerID);
-            //    string customerName = customer.GetCustomerInfo("UserName", customerID);
-            //    string customerPhone = customer.GetCustomerInfo("UserPhone", customerID);
-            //    string customerAddress = customer.GetCustomerInfo("UserAddress", customerID);
-
-            //    customerInfo.Add(customerEmail);
-            //    customerInfo.Add(customerName);
-            //    customerInfo.Add(customerPhone);
-            //    customerInfo.Add(customerAddress);
-            //}
-
             for (int i = 0; i < formCount; i++)
             {
                 int productQuantity = Convert.ToInt32(Request.Form["ProductQuantity[" + i + "]"]);
@@ -78,7 +62,8 @@ namespace B2C_Ecomerce_Website.Controllers
                     ProductUnitSize = Request.Form["ProductUnitSize[" + i + "]"],
                     ProductBrand = Request.Form["ProductBrand[" + i + "]"],
                     ProductOrigin = Request.Form["ProductOrigin[" + i + "]"],
-                    ProductQuantity = productQuantity,
+                    ProductQuantity = Convert.ToInt32(Request.Form["ProductAvailableQuantity[" + i + "]"]),
+                    ProductOrderQuantity = productQuantity,
                     ProductPrice = productPrice
                 };
                 productList.Add(product);
@@ -86,7 +71,6 @@ namespace B2C_Ecomerce_Website.Controllers
 
             ViewBag.ProductList = productList;
             ViewBag.TotalBill = totalBill;
-            //ViewBag.CustomerInfo = customerInfo;
             return View();
         }
 

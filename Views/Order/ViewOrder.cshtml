@@ -1,24 +1,12 @@
 ﻿@using B2C_Ecomerce_Website.Models
 @{
     ViewBag.Title = "ViewOrder";
-    if (Session["CustomerID"] == null)
-    {
-        Response.Redirect("~/Order/Index");
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if (Session["CustomerID"] != null)
-    {
-        Layout = "~/Views/Shared/_Logined.cshtml";
-    }
-    else
-    {
-        Layout = "~/Views/Shared/_Layout.cshtml";
-    }
-
-    List<C_Order> orderList = ViewBag.OrderList;
+    List<DeliveryCustomerReceipt> orderList = ViewBag.OrderList;
     if (ViewBag.OrderList == null)
     {
-        orderList = new List<C_Order>();
+        orderList = new List<DeliveryCustomerReceipt>();
     }
 
     int count = orderList.Count();
@@ -37,29 +25,31 @@
             else
             {
                 <div class="panel-body">
-                    <p>Welcome Agents! These are your current orders.</p>
+                    <p>Welcome Customer! These are your current orders.</p>
                 </div>
 
                 <table class="table table-hover">
                     <tr>
-                        <th>Order ID</th>
-                        <th>Order Date</th>
-                        <th>Order Status</th>
-                        <th>Payment Status</th>
-                        <th>Payment Date</th>
+                        <th>Receipt ID</th>
+                        <th>Customer Name</th>
+                        <th>Customer Phone</th>
+                        <th>Customer Address</th>
                         <th>Payment Method</th>
+                        <th>Payment Date</th>
+                        <th>Transaction No.</th>
                         <th>Total Bill</th>
                     </tr>
-                    @foreach (C_Order order in orderList)
+                    @foreach (DeliveryCustomerReceipt order in orderList)
                     {
                         <tr>
-                            <td>@order.OrderID</td>
-                            <td>@order.OrderDate</td>
-                            <td>@order.OrderStatus</td>
-                            <td>@order.PaymentStatus</td>
-                            <td>@order.GetPaymentDate</td>
+                            <td>@order.DeliveryCustomerReceiptID</td>
+                            <td>@order.CustomerName</td>
+                            <td>@order.CustomerPhone</td>
+                            <td>@order.CustomerAddress</td>
                             <td>@order.PaymentMethod</td>
-                            <td>@order.OrderProductTotalBill</td>
+                            <td>@order.GetPaymentDate</td>
+                            <td>@order.GetPaymentTransactionNo</td>
+                            <td>@order.TotalBill</td>
                         </tr>
                     }
                 </table>

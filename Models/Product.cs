@@ -31,6 +31,7 @@ namespace B2C_Ecomerce_Website.Models
         public string ProductBrand { get; set; }
         public string ProductOrigin { get; set; }
         public Nullable<int> ProductQuantity { get; set; }
+        public Nullable<int> ProductOrderQuantity { get; set; }
         public Nullable<decimal> ProductPrice { get; set; }
         public Nullable<bool> ProductDeleted { get; set; }
     
@@ -66,6 +67,19 @@ namespace B2C_Ecomerce_Website.Models
                 }
                 conn.Close();
                 return res;
+            }
+        }
+
+        public void UpdateProductQuantity(string productId, int newQuantity)
+        {
+            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
+            {
+                conn.Open();
+                string sql = "update Product" + " set ProductQuantity = " + newQuantity +
+                    " where ProductID = '" + productId + "'"; 
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
             }
         }
     }

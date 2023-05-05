@@ -75,7 +75,8 @@ namespace B2C_Ecomerce_Website.Models
                     receipt.CustomerName = dr["CustomerName"].ToString();
                     receipt.CustomerPhone = dr["CustomerPhone"].ToString();
                     receipt.CustomerAddress = dr["CustomerAddress"].ToString();
-                    receipt.PaymentMethod = dr["OrderStatus"].ToString();
+                    receipt.PaymentMethod = dr["PaymentMethod"].ToString();
+                    receipt.TotalBill = Convert.ToDecimal(dr["TotalBill"]);
                     if (!(dr["PaymentDate"] is DBNull))
                     {
                         receipt.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
@@ -111,7 +112,7 @@ namespace B2C_Ecomerce_Website.Models
                     receipt.CustomerName = dr["CustomerName"].ToString();
                     receipt.CustomerPhone = dr["CustomerPhone"].ToString();
                     receipt.CustomerAddress = dr["CustomerAddress"].ToString();
-                    receipt.PaymentMethod = dr["OrderStatus"].ToString();
+                    receipt.PaymentMethod = dr["PaymentMethod"].ToString();
                     if (!(dr["PaymentDate"] is DBNull))
                     {
                         receipt.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
@@ -192,7 +193,7 @@ namespace B2C_Ecomerce_Website.Models
             string PaymentMethod,
             decimal TotalBill,
             DateTime CreatedDate,
-            string CartID)
+            string CartID = "")
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
@@ -216,7 +217,7 @@ namespace B2C_Ecomerce_Website.Models
                 conn.Open();
                 string sql = "update DeliveryCustomerReceipt" +
                     " set PaymentTransactionNo = " + transactionNo + ", PaymentDate = '" + parsedDate.ToString() + "'" +
-                    " where OrderID = '" + receiptId + "'";
+                    " where DeliveryCustomerReceiptID = '" + receiptId + "'";
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
                 conn.Close();
