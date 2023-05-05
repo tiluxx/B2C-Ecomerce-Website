@@ -20,6 +20,7 @@ namespace B2C_Ecomerce_Website.Models
         public Cart()
         {
             this.CartDetails = new HashSet<CartDetail>();
+            this.DeliveryCustomerReceipts = new HashSet<DeliveryCustomerReceipt>();
         }
     
         public string CartID { get; set; }
@@ -30,13 +31,15 @@ namespace B2C_Ecomerce_Website.Models
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CartDetail> CartDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DeliveryCustomerReceipt> DeliveryCustomerReceipts { get; set; }
 
-        public Cart SelectAgentCartQuery(string customerId)
+        public Cart SelectCustomerCartQuery(string customerId)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "select * from Cart where CustomerID = '" + customerId + "'";
+                string sql = "select * from Cart where CartID = '" + customerId + "'";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 Cart res = new Cart();
@@ -114,13 +117,13 @@ namespace B2C_Ecomerce_Website.Models
                 }
                 else
                 {
-                    res = "CCTD" + order.ToString();
+                    res = "ACTD" + order.ToString();
                 }
                 return res;
             }
             else
             {
-                return "CCTD000001";
+                return "ACTD000001";
             }
         }
     }

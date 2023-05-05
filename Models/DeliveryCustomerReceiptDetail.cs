@@ -14,30 +14,26 @@ namespace B2C_Ecomerce_Website.Models
     using System.Configuration;
     using System.Data.SqlClient;
 
-    public partial class CustomerAccount
+    public partial class DeliveryCustomerReceiptDetail
     {
-        public string CustomerACID { get; set; }
-        public string CustomerID { get; set; }
+        public string DeliveryCustomerReceiptID { get; set; }
+        public string ProductID { get; set; }
+        public Nullable<int> Quantity { get; set; }
     
-        public virtual C_User C_User { get; set; }
-        public virtual UserAccount UserAccount { get; set; }
+        public virtual DeliveryCustomerReceipt DeliveryCustomerReceipt { get; set; }
+        public virtual Product Product { get; set; }
 
-        public string GetCustomerID(string username)
+        public void AddReceiptDetailQuery(string receiptID, string ProductID, int ProductQuantity)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "select AgentID from AgentAccount where AgentACID = '" + username + "' or AgentID = '" + username + "'";
+                string sql = "insert into DeliveryCustomerReceiptDetail values ('" +
+                    receiptID +
+                    "', '" + ProductID +
+                    "', " + ProductQuantity + ")";
                 SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                string res = "";
-                while (dr.Read())
-                {
-                    res = dr["AgentID"].ToString();
-                }
-                conn.Close();
-                return res;
+                cmd.ExecuteNonQuery();
             }
         }
     }

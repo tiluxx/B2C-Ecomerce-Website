@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DistributorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DistributorDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="_Order">
           <Key>
             <PropertyRef Name="OrderID" />
@@ -18,6 +18,7 @@
           <Property Name="PaymentMethod" Type="varchar" MaxLength="10" />
           <Property Name="OrderProductTotalBill" Type="money" />
           <Property Name="OrderDeleted" Type="bit" />
+          <Property Name="PaymentTransactionNo" Type="bigint" />
         </EntityType>
         <EntityType Name="_User">
           <Key>
@@ -60,6 +61,30 @@
           </Key>
           <Property Name="CustomerACID" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="CustomerID" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DeliveryCustomerReceipt">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CartID" Type="varchar" MaxLength="10" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="20" />
+          <Property Name="CustomerPhone" Type="varchar" MaxLength="15" />
+          <Property Name="CustomerAddress" Type="varchar" MaxLength="20" />
+          <Property Name="PaymentMethod" Type="varchar" MaxLength="10" />
+          <Property Name="PaymentDate" Type="datetime" />
+          <Property Name="PaymentTransactionNo" Type="bigint" />
+          <Property Name="TotalBill" Type="money" />
+        </EntityType>
+        <EntityType Name="DeliveryCustomerReceiptDetail">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="ProductID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -165,6 +190,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__DeliveryC__Deliv__0B91BA14">
+          <End Role="DeliveryCustomerReceipt" Type="Self.DeliveryCustomerReceipt" Multiplicity="1" />
+          <End Role="DeliveryCustomerReceiptDetail" Type="Self.DeliveryCustomerReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryCustomerReceipt">
+              <PropertyRef Name="DeliveryCustomerReceiptID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceiptDetail">
+              <PropertyRef Name="DeliveryCustomerReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryC__Produ__0C85DE4D">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="DeliveryCustomerReceiptDetail" Type="Self.DeliveryCustomerReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceiptDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__OrderDeta__Order__4CA06362">
           <End Role="_Order" Type="Self._Order" Multiplicity="1" />
           <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
@@ -196,6 +245,8 @@
           <EntitySet Name="CartDetail" EntityType="Self.CartDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAccount" EntityType="Self.CustomerAccount" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryCustomerReceipt" EntityType="Self.DeliveryCustomerReceipt" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DeliveryCustomerReceiptDetail" EntityType="Self.DeliveryCustomerReceiptDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserAccount" EntityType="Self.UserAccount" Schema="dbo" store:Type="Tables" />
@@ -223,6 +274,14 @@
             <End Role="_User" EntitySet="_User" />
             <End Role="CustomerAccount" EntitySet="CustomerAccount" />
           </AssociationSet>
+          <AssociationSet Name="FK__DeliveryC__Deliv__0B91BA14" Association="Self.FK__DeliveryC__Deliv__0B91BA14">
+            <End Role="DeliveryCustomerReceipt" EntitySet="DeliveryCustomerReceipt" />
+            <End Role="DeliveryCustomerReceiptDetail" EntitySet="DeliveryCustomerReceiptDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryC__Produ__0C85DE4D" Association="Self.FK__DeliveryC__Produ__0C85DE4D">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="DeliveryCustomerReceiptDetail" EntitySet="DeliveryCustomerReceiptDetail" />
+          </AssociationSet>
           <AssociationSet Name="FK__OrderDeta__Order__4CA06362" Association="Self.FK__OrderDeta__Order__4CA06362">
             <End Role="_Order" EntitySet="_Order" />
             <End Role="OrderDetail" EntitySet="OrderDetail" />
@@ -232,8 +291,7 @@
             <End Role="OrderDetail" EntitySet="OrderDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DistributorDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -251,6 +309,7 @@
           <Property Name="OrderProductTotalBill" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="OrderDeleted" Type="Boolean" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__4CA06362" FromRole="C_Order" ToRole="OrderDetail" />
+          <Property Name="PaymentTransactionNo" Type="Int64" />
         </EntityType>
         <EntityType Name="C_User">
           <Key>
@@ -275,6 +334,7 @@
           <Property Name="CartDeleted" Type="Boolean" />
           <NavigationProperty Name="Customer" Relationship="Self.FK__Cart__CustomerID__4F7CD00D" FromRole="Cart" ToRole="Customer" />
           <NavigationProperty Name="CartDetails" Relationship="Self.FK__CartDetai__CartI__52593CB8" FromRole="Cart" ToRole="CartDetail" />
+          <NavigationProperty Name="DeliveryCustomerReceipts" Relationship="DistributorDBModel.FK__DeliveryC__Payme__5629CD9C" FromRole="Cart" ToRole="DeliveryCustomerReceipt" />
         </EntityType>
         <EntityType Name="CartDetail">
           <Key>
@@ -330,6 +390,7 @@
           <Property Name="ProductDeleted" Type="Boolean" />
           <NavigationProperty Name="CartDetails" Relationship="Self.FK__CartDetai__Produ__534D60F1" FromRole="Product" ToRole="CartDetail" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Produ__4BAC3F29" FromRole="Product" ToRole="OrderDetail" />
+          <NavigationProperty Name="DeliveryCustomerReceiptDetails" Relationship="DistributorDBModel.FK__DeliveryC__Produ__0C85DE4D" FromRole="Product" ToRole="DeliveryCustomerReceiptDetail" />
         </EntityType>
         <EntityType Name="UserAccount">
           <Key>
@@ -479,7 +540,83 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
           </AssociationSet>
+          <EntitySet Name="DeliveryCustomerReceipts" EntityType="DistributorDBModel.DeliveryCustomerReceipt" />
+          <AssociationSet Name="FK__DeliveryC__Payme__5629CD9C" Association="DistributorDBModel.FK__DeliveryC__Payme__5629CD9C">
+            <End Role="Cart" EntitySet="Carts" />
+            <End Role="DeliveryCustomerReceipt" EntitySet="DeliveryCustomerReceipts" />
+          </AssociationSet>
+          <EntitySet Name="DeliveryCustomerReceiptDetails" EntityType="DistributorDBModel.DeliveryCustomerReceiptDetail" />
+          <AssociationSet Name="FK__DeliveryC__Deliv__0B91BA14" Association="DistributorDBModel.FK__DeliveryC__Deliv__0B91BA14">
+            <End Role="DeliveryCustomerReceipt" EntitySet="DeliveryCustomerReceipts" />
+            <End Role="DeliveryCustomerReceiptDetail" EntitySet="DeliveryCustomerReceiptDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__DeliveryC__Produ__0C85DE4D" Association="DistributorDBModel.FK__DeliveryC__Produ__0C85DE4D">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="DeliveryCustomerReceiptDetail" EntitySet="DeliveryCustomerReceiptDetails" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="DeliveryCustomerReceipt">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CartID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerAddress" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Cart" Relationship="DistributorDBModel.FK__DeliveryC__Payme__5629CD9C" FromRole="DeliveryCustomerReceipt" ToRole="Cart" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="TotalBill" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="DeliveryCustomerReceiptDetails" Relationship="DistributorDBModel.FK__DeliveryC__Deliv__0B91BA14" FromRole="DeliveryCustomerReceipt" ToRole="DeliveryCustomerReceiptDetail" />
+        </EntityType>
+        <Association Name="FK__DeliveryC__Payme__5629CD9C">
+          <End Type="DistributorDBModel.Cart" Role="Cart" Multiplicity="0..1" />
+          <End Type="DistributorDBModel.DeliveryCustomerReceipt" Role="DeliveryCustomerReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceipt">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DeliveryCustomerReceiptDetail">
+          <Key>
+            <PropertyRef Name="DeliveryCustomerReceiptID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="DeliveryCustomerReceiptID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProductID" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="DeliveryCustomerReceipt" Relationship="DistributorDBModel.FK__DeliveryC__Deliv__0B91BA14" FromRole="DeliveryCustomerReceiptDetail" ToRole="DeliveryCustomerReceipt" />
+          <NavigationProperty Name="Product" Relationship="DistributorDBModel.FK__DeliveryC__Produ__0C85DE4D" FromRole="DeliveryCustomerReceiptDetail" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK__DeliveryC__Deliv__0B91BA14">
+          <End Type="DistributorDBModel.DeliveryCustomerReceipt" Role="DeliveryCustomerReceipt" Multiplicity="1" />
+          <End Type="DistributorDBModel.DeliveryCustomerReceiptDetail" Role="DeliveryCustomerReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DeliveryCustomerReceipt">
+              <PropertyRef Name="DeliveryCustomerReceiptID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceiptDetail">
+              <PropertyRef Name="DeliveryCustomerReceiptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__DeliveryC__Produ__0C85DE4D">
+          <End Type="DistributorDBModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="DistributorDBModel.DeliveryCustomerReceiptDetail" Role="DeliveryCustomerReceiptDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="DeliveryCustomerReceiptDetail">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -489,6 +626,7 @@
           <EntitySetMapping Name="C_Order">
             <EntityTypeMapping TypeName="DistributorDBModel.C_Order">
               <MappingFragment StoreEntitySet="_Order">
+                <ScalarProperty Name="PaymentTransactionNo" ColumnName="PaymentTransactionNo" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
                 <ScalarProperty Name="AgentID" ColumnName="AgentID" />
@@ -578,6 +716,29 @@
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="Activated" ColumnName="Activated" />
                 <ScalarProperty Name="UserDeleted" ColumnName="UserDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryCustomerReceipts">
+            <EntityTypeMapping TypeName="DistributorDBModel.DeliveryCustomerReceipt">
+              <MappingFragment StoreEntitySet="DeliveryCustomerReceipt">
+                <ScalarProperty Name="TotalBill" ColumnName="TotalBill" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
+                <ScalarProperty Name="DeliveryCustomerReceiptID" ColumnName="DeliveryCustomerReceiptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DeliveryCustomerReceiptDetails">
+            <EntityTypeMapping TypeName="DistributorDBModel.DeliveryCustomerReceiptDetail">
+              <MappingFragment StoreEntitySet="DeliveryCustomerReceiptDetail">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="DeliveryCustomerReceiptID" ColumnName="DeliveryCustomerReceiptID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

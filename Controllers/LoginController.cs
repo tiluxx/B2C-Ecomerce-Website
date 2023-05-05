@@ -30,13 +30,13 @@ namespace B2C_Ecomerce_Website.Controllers
                 {
                     // Start session
                     CustomerAccount customerAccount = new CustomerAccount();
-                    string customerId = customerAccount.GetAgentID(userAccountModel.UserName);
+                    string customerId = customerAccount.GetCustomerID(userAccountModel.UserName);
                     Session["CustomerID"] = customerId;
 
                     // Get the current cart of agent
                     Cart cart = new Cart();
                     CartDetail agentCartDetail = new CartDetail();
-                    Cart agentCart = cart.SelectAgentCartQuery(customerId);
+                    Cart agentCart = cart.SelectCustomerCartQuery(customerId);
 
                     if (agentCart.CartID != null)
                     {

@@ -93,6 +93,5 @@ namespace B2C_Ecomerce_Website.Models
                 return counter > 0;
             }
         }
-
     }
 }

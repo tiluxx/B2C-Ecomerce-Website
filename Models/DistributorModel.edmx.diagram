@@ -22,6 +22,11 @@
         <AssociationConnector Association="DistributorDBModel.FK__CartDetai__Produ__534D60F1" ManuallyRouted="false" />
         <AssociationConnector Association="DistributorDBModel.FK__CustomerA__Custo__35BCFE0A" ManuallyRouted="false" />
         <AssociationConnector Association="DistributorDBModel.FK__OrderDeta__Produ__4BAC3F29" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DistributorDBModel.DeliveryCustomerReceipt" Width="1.5" PointX="3" PointY="11.375" />
+        <AssociationConnector Association="DistributorDBModel.FK__DeliveryC__Payme__5629CD9C" />
+        <EntityTypeShape EntityType="DistributorDBModel.DeliveryCustomerReceiptDetail" Width="1.5" PointX="5.25" PointY="8" />
+        <AssociationConnector Association="DistributorDBModel.FK__DeliveryC__Deliv__0B91BA14" />
+        <AssociationConnector Association="DistributorDBModel.FK__DeliveryC__Produ__0C85DE4D" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -11,9 +11,7 @@ namespace B2C_Ecomerce_Website.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Configuration;
-    using System.Data.SqlClient;
-
+    
     public partial class C_Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -31,160 +29,9 @@ namespace B2C_Ecomerce_Website.Models
         public string PaymentMethod { get; set; }
         public Nullable<decimal> OrderProductTotalBill { get; set; }
         public Nullable<bool> OrderDeleted { get; set; }
+        public Nullable<long> PaymentTransactionNo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
-        public string GetPaymentDate
-        {
-            get
-            {
-                return PaymentDate.HasValue ? PaymentDate.Value.ToString("yyyy-MM-dd HH:mm:ss") : "Not Paid";
-            }
-        }
-
-        public List<C_Order> SelectAgentOrderQuery(string agentId)
-        {
-
-            List<C_Order> res = new List<C_Order>();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
-            {
-                conn.Open();
-                string sql = "select * from _Order where AgentID = '" + agentId + "'";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    C_Order order = new C_Order();
-                    order.OrderID = dr["OrderID"].ToString();
-                    order.OrderDate = Convert.ToDateTime(dr["OrderDate"]);
-                    order.AgentID = dr["AgentID"].ToString();
-                    order.OrderStatus = dr["OrderStatus"].ToString();
-                    order.PaymentStatus = dr["PaymentStatus"].ToString();
-                    if (!(dr["PaymentDate"] is DBNull))
-                    {
-                        order.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
-                    }
-                    order.PaymentMethod = dr["PaymentMethod"].ToString();
-                    order.OrderProductTotalBill = Convert.ToDecimal(dr["OrderProductTotalBill"]);
-                    res.Add(order);
-                }
-                conn.Close();
-            }
-            return res;
-        }
-
-        public List<C_Order> SelectOrderByIDQuery(string orderID)
-        {
-
-            List<C_Order> res = new List<C_Order>();
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
-            {
-                conn.Open();
-                string sql = "select * from _Order where OrderID = '" + orderID + "'";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    C_Order order = new C_Order();
-                    order.OrderID = dr["OrderID"].ToString();
-                    order.OrderDate = Convert.ToDateTime(dr["OrderDate"]);
-                    order.AgentID = dr["AgentID"].ToString();
-                    order.OrderStatus = dr["OrderStatus"].ToString();
-                    order.PaymentStatus = dr["PaymentStatus"].ToString();
-                    if (!(dr["PaymentDate"] is DBNull))
-                    {
-                        order.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
-                    }
-                    order.PaymentMethod = dr["PaymentMethod"].ToString();
-                    order.OrderProductTotalBill = Convert.ToDecimal(dr["OrderProductTotalBill"]);
-                    res.Add(order);
-                }
-                conn.Close();
-            }
-            return res;
-        }
-
-        private string GetOrderDesc()
-        {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
-            {
-                conn.Open();
-                string sql = "select top 1 OrderID from _Order order by OrderID desc";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-
-                SqlDataReader dr = cmd.ExecuteReader();
-                string res = "";
-                while (dr.Read())
-                {
-                    res = dr["OrderID"].ToString();
-                }
-                conn.Close();
-                return res;
-            }
-        }
-
-        public string GetNewOrderID()
-        {
-            string res = GetOrderDesc();
-            if (res != null && !res.Equals(""))
-            {
-                int order = int.Parse(res.Substring(4)) + 1;
-                if (order < 10)
-                {
-                    res = "OPMP00000" + order.ToString();
-                }
-                else if (order < 100)
-                {
-                    res = "OPMP0000" + order.ToString();
-                }
-                else if (order < 1000)
-                {
-                    res = "OPMP000" + order.ToString();
-                }
-                else if (order < 10000)
-                {
-                    res = "OPMP00" + order.ToString();
-                }
-                else if (order < 100000)
-                {
-                    res = "OPMP0" + order.ToString();
-                }
-                else
-                {
-                    res = "OPMP" + order.ToString();
-                }
-                return res;
-            }
-            else
-            {
-                return "OPMP000001";
-            }
-        }
-
-        public void AddOrderQuery(
-            string OrderID,
-            string AgentID,
-            string OrderStatus,
-            string PaymentStatus,
-            string PaymentMethod,
-            bool OrdertDeleted,
-            decimal TotalBill,
-            DateTime OrderDate)
-        {
-            using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
-            {
-                conn.Open();
-                string orderDate = OrderDate.ToString("yyyy-MM-dd HH:mm:ss");
-                string sql = "insert into _Order" +
-                    " (OrderID, OrderDate, AgentID, OrderStatus, PaymentStatus, PaymentMethod, OrderProductTotalBill, OrderDeleted)" +
-                    " values('" + OrderID + "', '" + orderDate + "', '" + AgentID + "', '" + OrderStatus + "', '" + PaymentStatus + "', '" + PaymentMethod + "', " + TotalBill + ", 0)";
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-            }
-        }
     }
 }

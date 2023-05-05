@@ -34,5 +34,7 @@ namespace B2C_Ecomerce_Website.Models
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<UserAccount> UserAccounts { get; set; }
+        public virtual DbSet<DeliveryCustomerReceipt> DeliveryCustomerReceipts { get; set; }
+        public virtual DbSet<DeliveryCustomerReceiptDetail> DeliveryCustomerReceiptDetails { get; set; }
     }
 }

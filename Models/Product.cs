@@ -21,6 +21,7 @@ namespace B2C_Ecomerce_Website.Models
         {
             this.CartDetails = new HashSet<CartDetail>();
             this.OrderDetails = new HashSet<OrderDetail>();
+            this.DeliveryCustomerReceiptDetails = new HashSet<DeliveryCustomerReceiptDetail>();
         }
     
         public string ProductID { get; set; }
@@ -37,6 +38,8 @@ namespace B2C_Ecomerce_Website.Models
         public virtual ICollection<CartDetail> CartDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DeliveryCustomerReceiptDetail> DeliveryCustomerReceiptDetails { get; set; }
 
         public List<Product> SelectProductQuery()
         {

@@ -131,6 +131,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -151,6 +152,12 @@
       <DependentUpon>DistributorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C_User.cs">
+      <DependentUpon>DistributorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DeliveryCustomerReceipt.cs">
+      <DependentUpon>DistributorModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DeliveryCustomerReceiptDetail.cs">
       <DependentUpon>DistributorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DistributorModel.Context.cs">
@@ -178,6 +185,9 @@
       <DependentUpon>DistributorModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Utils.cs" />
+    <Compile Include="Services\VnPayCompare.cs" />
+    <Compile Include="Services\VnPayLibrary.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -232,7 +242,6 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Order\Index.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Order\Result.cshtml" />
     <Content Include="Views\Order\ViewOrder.cshtml" />
     <Content Include="Views\Product\Cart.cshtml" />
@@ -241,6 +250,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Payment\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

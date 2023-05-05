@@ -13,6 +13,8 @@ namespace B2C_Ecomerce_Website.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
+    using System.Configuration;
+    using System.Data.SqlClient;
 
     public partial class UserAccount
     {

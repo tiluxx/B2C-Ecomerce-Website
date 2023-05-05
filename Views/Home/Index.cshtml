@@ -1,5 +1,6 @@
-﻿@{
-    if (Session["AgentID"] != null)
+﻿@using B2C_Ecomerce_Website.Models;
+@{
+    if (Session["CustomerID"] != null)
     {
         Layout = "~/Views/Shared/_Logined.cshtml";
     }
@@ -8,8 +9,56 @@
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
     ViewBag.Title = "Home Page";
+
+    List<Product> productList = ViewBag.ProductList;
+
+    string addCartMessage = "";
+    if (ViewBag.AddCartMessage != null)
+    {
+        addCartMessage = (string)ViewBag.AddCartMessage;
+    }
 }
 
-<div class="row">
-    Welcome Agents
+<div style="display: flex; justify-content: center; align-items: center">
+    <div class="panel panel-default">
+        <div class="panel-heading text-center">All current models</div>
+        <div class="panel-body">
+            <p>Welcome Agents! This is our lastest models. Please choose your products and place orders.</p>
+            <div style="color: red">@addCartMessage</div>
+        </div>
+
+        <table class="table table-hover">
+            <tr>
+                <th>Action</th>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Origin</th>
+                <th>Product Size</th>
+                <th>Available Quantity</th>
+            </tr>
+            @foreach (Product product in productList)
+            {
+                if (product != null)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-default"
+                               href="@Url.Action("AddToCart", "Product", product )">
+                                Add to cart
+                            </a>
+                        </td>
+                        <td>@product.ProductID</td>
+                        <td>@product.ProductName</td>
+                        <td>@product.ProductBrand</td>
+                        <td>@product.ProductPrice</td>
+                        <td>@product.ProductOrigin</td>
+                        <td>@product.ProductSize @product.ProductUnitSize</td>
+                        <td>@product.ProductQuantity</td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
 </div>

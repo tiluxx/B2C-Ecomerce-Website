@@ -29,21 +29,37 @@ namespace B2C_Ecomerce_Website.Controllers
             {
                 return View("Index");
             }
-            C_Order order = new C_Order();
-            List<C_Order> orderList = order.SelectAgentOrderQuery(Session["CustomerID"].ToString());
+            DeliveryCustomerReceipt receipt = new DeliveryCustomerReceipt();
+            List<DeliveryCustomerReceipt> orderList = receipt.SelectReceiptQuery(Session["CustomerID"].ToString());
             ViewBag.OrderList = orderList;
             return View();
+        }
+
+        public ActionResult VnPaymentResponse(bool status, string message, long transactionNo = 0, long payDate = 0, string orderId = "")
+        {
+            if (status)
+            {
+                DeliveryCustomerReceipt receipt = new DeliveryCustomerReceipt();
+                receipt.UpdateReceiptQuery(orderId, transactionNo, payDate);
+            }
+            ViewBag.Message = message;
+            return View("Result");
         }
 
         [HttpPost]
         public ActionResult PlaceOrder()
         {
-            C_Order order = new C_Order();
-            string newOrderID = order.GetNewOrderID();
-            string agentID = Request.Form["CustomerID"];
+            DeliveryCustomerReceipt receipt = new DeliveryCustomerReceipt();
+            string newReceiptID = receipt.GetNewReceiptID();
+            string cartID = Request.Form["CartID"];
+            string customerName = Request.Form["CustomerName"];
+            string customerPhone = Request.Form["CustomerPhone"];
+            string customerAddress = Request.Form["CustomerAddress"];
             string paymentMethod = Request.Form["PaymentMethod"];
-            decimal totalBill = Convert.ToDecimal(Request.Form["TotalBill"]);
-            order.AddOrderQuery(newOrderID, agentID, "Processing Stock", "Awaiting Payment", paymentMethod, false, totalBill, DateTime.Now);
+            decimal totalBill = Convert.ToInt64(Request.Form["TotalBill"]);
+            DateTime createdDate = DateTime.Now;
+            string email = Request.Form["EmailInput"];
+            receipt.AddReceiptQuery(newReceiptID, customerName, customerPhone, customerAddress, paymentMethod, totalBill, createdDate, cartID);
 
             // Get the acutal number of groups of product's information
             int formCount = Request.Form.Count / 8;
@@ -52,8 +68,8 @@ namespace B2C_Ecomerce_Website.Controllers
                 string productID = Request.Form["ProductID[" + i + "]"];
                 int productQuantity = Convert.ToInt32(Request.Form["ProductQuantity[" + i + "]"]);
 
-                OrderDetail orderDetail = new OrderDetail();
-                orderDetail.AddOrderDetailQuery(newOrderID, productID, productQuantity);
+                DeliveryCustomerReceiptDetail receiptDetail = new DeliveryCustomerReceiptDetail();
+                receiptDetail.AddReceiptDetailQuery(newReceiptID, productID, productQuantity);
             }
 
             Session["CurrCartList"] = new List<Product>();
@@ -61,15 +77,15 @@ namespace B2C_Ecomerce_Website.Controllers
 
             // Send confirm message to email
             // Get Agent's email
-            C_User agent = new C_User();
-            string agentEmail = agent.GetAgentInfo("UserEmail", agentID);
-            string agentName = agent.GetAgentInfo("UserName", agentID);
+            // C_User agent = new C_User();
+            //string customerEmail = agent.GetCustomerInfo("UserEmail", customerID);
+            //string customerEmail = agent.GetCustomerInfo("UserName", customerID);
 
             MailMessage mail = new MailMessage();
-            mail.To.Add("work.lethanhtien@gmail.com");
+            mail.To.Add(email);
             mail.From = new MailAddress("lethanhtienhqv@gmail.com");
             mail.Subject = "Order Confirm Letter";
-            string Body = "Dear " + agentName + ",<br />Thank you for your consideration to choose our service. We are grateful to say that your order is placed successfully and in the way to process.<br />Sincerely, Distributor";
+            string Body = "Dear customer,<br />Thank you for your consideration to choose our service. We are grateful to say that your order is placed successfully and in the way to process.<br />Sincerely, Distributor";
             mail.Body = Body;
             mail.IsBodyHtml = true;
             SmtpClient smtp = new SmtpClient
@@ -82,6 +98,11 @@ namespace B2C_Ecomerce_Website.Controllers
             };
             smtp.Send(mail);
 
+            if (paymentMethod.Equals("VNPay"))
+            {
+                return RedirectToAction("CreatePayment", "Payment", new { amount = totalBill, orderId = newReceiptID });
+            }
+
             ViewBag.Message = "Place order successfully";
             return View("Result");
         }
@@ -89,9 +110,9 @@ namespace B2C_Ecomerce_Website.Controllers
         [HttpPost]
         public ActionResult ViewOrderByOrderID()
         {
-            C_Order order = new C_Order();
-            List<C_Order> orderList = order.SelectOrderByIDQuery(Request.Form["OrderID"]);
-            ViewBag.OrderList = orderList;
+            DeliveryCustomerReceipt receipt = new DeliveryCustomerReceipt();
+            List<DeliveryCustomerReceipt> receiptList = receipt.SelectReceiptByIDQuery(Request.Form["OrderID"]);
+            ViewBag.OrderList = receiptList;
             return View("ViewOrder");
         }
     }

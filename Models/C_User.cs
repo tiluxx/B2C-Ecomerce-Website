@@ -33,12 +33,12 @@ namespace B2C_Ecomerce_Website.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerAccount> CustomerAccounts { get; set; }
 
-        public string GetAgentInfo(string info, string agentId)
+        public string GetCustomerInfo(string info, string customerId)
         {
             using (SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DBConn"].ToString()))
             {
                 conn.Open();
-                string sql = "select " + info + " from _User where UserID = '" + agentId + "'";
+                string sql = "select " + info + " from _User where UserID = '" + customerId + "'";
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 SqlDataReader dr = cmd.ExecuteReader();
