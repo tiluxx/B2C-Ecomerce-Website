@@ -48,7 +48,7 @@ namespace B2C_Ecomerce_Website.Controllers
             string customerPhone = Request.Form["CustomerPhone"];
             string customerAddress = Request.Form["CustomerAddress"];
             string paymentMethod = Request.Form["PaymentMethod"];
-            decimal totalBill = Convert.ToInt64(Request.Form["TotalBill"]);
+            decimal totalBill = Convert.ToDecimal(Request.Form["TotalBill"].ToString());
             DateTime createdDate = DateTime.Now;
             string email = Request.Form["EmailInput"];
             receipt.AddReceiptQuery(newReceiptID, customerName, customerPhone, customerAddress, paymentMethod, totalBill, createdDate);
