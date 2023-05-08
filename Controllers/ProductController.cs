@@ -62,7 +62,7 @@ namespace B2C_Ecomerce_Website.Controllers
                     ProductUnitSize = Request.Form["ProductUnitSize[" + i + "]"],
                     ProductBrand = Request.Form["ProductBrand[" + i + "]"],
                     ProductOrigin = Request.Form["ProductOrigin[" + i + "]"],
-                    ProductQuantity = Convert.ToInt32(Request.Form["ProductAvailableQuantity[" + i + "]"]),
+                    ProductQuantity = Convert.ToInt32(Request.Form["ProductQuantity[" + i + "]"]),
                     ProductOrderQuantity = productQuantity,
                     ProductPrice = productPrice
                 };

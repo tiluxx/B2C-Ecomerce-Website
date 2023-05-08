@@ -22,7 +22,7 @@ namespace B2C_Ecomerce_Website.Controllers
             pay.AddRequestData("vnp_Version", "2.1.0");
             pay.AddRequestData("vnp_Command", "pay");
             pay.AddRequestData("vnp_TmnCode", tmnCode);
-            pay.AddRequestData("vnp_Amount", ((long)(amount * 100)).ToString());
+            pay.AddRequestData("vnp_Amount", (amount * 100).ToString());
             pay.AddRequestData("vnp_BankCode", "");
             pay.AddRequestData("vnp_CreateDate", DateTime.Now.ToString("yyyyMMddHHmmss"));
             pay.AddRequestData("vnp_CurrCode", "VND");

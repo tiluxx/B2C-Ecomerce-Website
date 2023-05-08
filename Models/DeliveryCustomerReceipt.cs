@@ -113,6 +113,8 @@ namespace B2C_Ecomerce_Website.Models
                     receipt.CustomerPhone = dr["CustomerPhone"].ToString();
                     receipt.CustomerAddress = dr["CustomerAddress"].ToString();
                     receipt.PaymentMethod = dr["PaymentMethod"].ToString();
+                    receipt.PaymentMethod = dr["PaymentMethod"].ToString();
+                    receipt.TotalBill = Convert.ToDecimal(dr["TotalBill"]);
                     if (!(dr["PaymentDate"] is DBNull))
                     {
                         receipt.PaymentDate = Convert.ToDateTime(dr["PaymentDate"]);
